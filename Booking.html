@@ -2,26 +2,338 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-    
     <link rel="stylesheet" href="style.css" type="text/css" />
-
+    <!-- Latest compiled and minified JavaScript -->
+  
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>    
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.1.1/angular-filter.js"></script>
     <script src="javascript.js"></script>
-    
   </head>
   
-  <body>
-    <div class="btn-group">
-      <button type="button" class="btn btn-default">Left</button>
-      <button type="button" class="btn btn-default">Middle</button>
-      <button type="button" class="btn btn-default">Right</button>
-    </div>    
+  <body ng-app="bookingIn" ng-controller="searchTagsController">
+    <div class="jumbotron parcel-scanning">
+      <h1>Has it been more than 5 minutes since parcel scanning?</h1>
+      <p>If you select yes and it has not been 5 minutes, you could cause the entire booking in process to break</p>
+      <div class="no-result">
+        <h4>Please wait 5 minutes before attempting to use these screens for delivery processing</h4>
+      </div>
+      <div class="parcel-scanning-btn">
+        <button type="button" class="btn btn-default btn-lg scan no-scan">no</button>
+        <button type="button" class="btn btn-primary btn-lg scan yes-scan">yes</button>
+      </div> 
+    </div>
+    <div class="main-content">
+      <div class="alert alert-warning" role="alert">
+        <h4>This is the header</h4>
+        <p>
+          This is where the header stuff lives
+        </p>
+      </div>
+    <div class="main-content">
+    <div class="alert alert-warning" role="alert">
+        <h4>Important message</h4>
+        <ul>
+          <li>There are parcels on the delayed screen please review</li>
+          <li>Today's schedule includes unprocessed deliveries from previous days</li>
+        </ul>
+    </div>
+      <!-- <div class="panel panel-default delayed-report">
+        <div class="panel-body">
+          If there are items missing, please check the Missing and Delayed report on My Store Workspace.<br/>
+          If the parcels are on there, there is no need to call the helpdesk<br/>
+          <div class="top-padding">
+            <a href = "https://mnscorp.sharepoint.com/sites/MSW/M%26S.comSite/_layouts/15/WopiFrame.aspx?sourcedoc={6806CFD0-2365-432F-B892-9632DF486039}&file=Delayed%20SYW%20Orders.xlsx&action=default&DefaultItemOpen=1" target="_blank">
+              <button class="btn btn-default btn-lg" type="button">
+                delayed parcel report
+              </button>
+            </a>
+          </div>
+        </div>
+      </div> -->
+      <div class="delivery-header">
+        <h3>Store deliveries (GM)  </h3>
+      </div>
+      <!-- Single button -->
+      <div class="btn-group btn-group-lg future-dates">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          Today: Tues 12 Aug <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li>Wed 13 Aug</li>
+          <li class="divider"></li>
+          <li>Thur 14 Aug</li>
+          <li class="divider"></li>
+          <li>Fri 15 Aug</li>
+        </ul>
+      </div>
+      <!--Delivery buttons -->
+      <div class="btn-group btn-group-lg delivery-tabs clearfix" data-toggle="buttons">
+        <label class="btn btn-default active btn-red">
+          <input type="radio" name="deliveries" id="unprocessed" checked>Unprocessed
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" name="deliveries" id="delivery1">Delivery 1
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" name="deliveries" id="delivery2">Delivery 2
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" name="deliveries" id="boss">BOSS
+        </label>
+        <label class="btn btn-default btn-red">
+          <input type="radio" name="deliveries" id="delayed">Delayed
+        </label>
+      </div>
+     
+    
+      <!--Delivery summary -->
+      
+      <div class="summary delivery">
+        <table class="summary-delivery">
+          <caption>Delivery summary</caption>
+          <tr class="values-lg">
+            <td>3</td>
+            <td>31</td>
+            <td>31</td>
+          </tr>
+          <tr>
+            <th>Consignments</th>
+            <th>Orders</th>
+            <th>Parcels</th>
+          </tr>
+        </table>
+      </div>
+      <!-- Large button -->
+      <!-- <div class="btn-group btn-group-lg print-choice" data-toggle="buttons">
+        <label class="btn btn-default">
+          <input type="radio" name="ordering" id="unprocessed">Order by consignment
+        </label>
+        <label class="btn btn-default">
+          <input type="radio" name="ordering" id="delivery1">Order by last name
+        </label>
+      </div> -->
+      
+      <div class="btn-group process-btn">
+        <button class="btn btn-default btn-lg btn-default" type="button" data-toggle="modal" data-target="#printModal">
+        Print: Order by consignment</button>
+        <button class="btn btn-default btn-lg btn-default" type="button" data-toggle="modal" data-target="#printModal">
+        Print: Order by last name</button>
+      </div>
+      
+<!--Modal for print -->
+      <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">In what order would you like your picking list?</h4>
+            </div>
+            <div class="modal-body">
+              You can choose to order by consignment, which is by the big outer boxes. <br/>
+              Select the button <strong>"by consignment"</strong><br/>
+              <br/>
+              or<br/>
+              <br/>
+              You can choose to order by Last name, which is A-Z by surname <br/>
+              Select the button <strong>"by last name"</strong><br/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">By consignment</button>
+              <button type="button" class="btn btn-success">By last name</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Modal for process -->
+      <div class="modal fade" id="processModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Are you sure you want to process this delivery?</h4>
+            </div>
+            <div class="modal-body">
+              Once this is processed you won't be able to return to this delivery. <br/>
+              <br/>
+              You are processing <strong>Unprocessed</strong> <br/>
+              <span class="delivered-count">31</span> parcels delivered <br/>
+              <span class="delayed-count">0</span> parcels delayed <br/>
+              <span class="missing-count">0</span> parcels missing <br/>
+              <br/>
+              Once you have processed it will take up to 10 minutes to appear on your collection screen. <br/>
+              You don't need to click on this message again
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+              <button type="button" class="btn btn-primary btn-success">Process</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Fixed elements -->
+      <div id="pinned-wrapper">
+        <div id="pinned-elements" class="clearfix">
+        <!--Parcel summary -->
+          <div class="summary parcel">
+            <table>
+              <caption>Parcel summary</caption>    
+              <tr class="values-lg">
+                <td><span class="delivered-count">31</span> <span class="values-sml">of 31</span></td>
+                <td><span class="delayed-count">-</span> <span class="values-sml">of 31</span></td>
+                <td><span class="missing-count">-</span> <span class="values-sml">of 31</span></td>
+              </tr>
+              <tr>
+                <th>Parcels delivered</th>
+                <th>Parcels delayed</th>
+                <th>Parcels missing/damaged</th>
+              </tr>
+            </table>
+          </div>
+          <div class="btn-group process-btn">
+            <button class="btn btn-default btn-lg btn-success" type="button" data-toggle="modal" data-target="#processModal">
+            process</button>
+          </div>
+      
+          <!--Search bar -->
+          <div class="search">
+            <p><strong>Search for missing items.</strong><br/>
+              Once you enter a search term, you can add more or <a ng-click="showAll()" href="" class="shipment shipment-show show-all">show all orders</a>
+            <form ng-submit="addSearchTerm()" role="form">
+              <div class="form-group row">
+                
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input ng-model="newSearchTerm" type="text" class="form-control" id="search-bar" placeholder="Search by shipment id, order number, first name, last name">
+                    <span class="input-group-btn">
+                      <input type="submit" value="Add to search" class="btn btn-primary" type="button">
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>  
+            <!--Clear search terms -->
+            <div class="search-tags">
+              <button type="button"  ng-repeat="searchTerm in searchTerms | uniq" ng-click="delete(searchTerm)" class="btn btn-default btn-sm search-term">
+                <span class="glyphicon glyphicon-remove"></span>
+                {{searchTerm}}
+              </button>
+            </div>
+          </div>
+        </div> 
+      </div>
+      
+      <!--Consignment table -->
+      <div class="consignment-table">
+        <div class="shipment-table-top">
+          <h4 class="consignment-header">All consignments for <strong>Unprocessed</strong></h4>
+          <div class="consignment-hide">
+             <button type="button"  class="btn btn-default btn-sm">hide all consignments</button>
+          </div>
+        </div>  
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Consignment number</th>
+              <th>Number of parcels</th>
+              <th>Mark as delayed</th>
+              <th>Mark as missing/damaged</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SYW12345629</td>
+              <td>12</td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Delayed
+                </label>
+              </td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Missing/damaged
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>SYW12345629</td>
+              <td>10</td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Delayed
+                </label>
+              </td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Missing/damaged
+                </label>
+              </td>
+            </tr>
+            <tr>
+              <td>SYW12345629</td>
+              <td>9</td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Delayed
+                </label>
+              </td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" value="option1"> Missing/damaged
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--Shipment table -->
+      <div class="shipment-table">
+        <div class="shipment-table-top">
+          <h4 class="shipment-header">All shipments for <strong>Unprocessed</strong></h4>
+          <div class="consignment-show">
+            <button type="button"  class="btn btn-default btn-sm">show all consignments</button>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="center-row">Show all</th>
+              <th>Last name</th>
+              <th>First name</th>
+              <th class="center-row">Number of parcels</th>
+              <th>Shipment ID</th>
+              <th>Order number</th>
+              <th>Mark as delayed</th>
+              <th>Mark as missing/damaged</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="shipment in shipments | searchTermFilter : searchTerms : baseFilter | uniq: 'orderNumber'">
+              <td class="center-row"><span class="glyphicon glyphicon-plus"></span></td>
+              <td>{{shipment.lastName}}</td>
+              <td>{{shipment.firstName}}</td>
+              <td class="center-row">{{shipment.parcelCount}}</td>
+              <td>{{shipment.shipmentId}}</td>
+              <td>{{shipment.orderNumber}}</td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" class="delayed" value="option1"> Delayed
+                </label>
+              </td>
+              <td>
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="inlineCheckbox1" class="missing" value="option1"> Missing
+                </label>
+              </td>
+            </tr>
+          </tbody>  
+        </table>
+       </div>
+    </div>     
   </body>
 </html>
